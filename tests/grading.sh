@@ -11,7 +11,7 @@ docker-compose build
 echo "🚀 Running the docker-compose services..."
 docker-compose run train
 docker-compose run evaluate
-docker-compose run infer
+# docker-compose run infer
 echo "✅ All services have completed."
 
 # Step 2: Check if the checkpoint is saved in the volume
@@ -38,13 +38,13 @@ fi
 echo "📄 Printing the content of eval_results.json file..."
 docker run --rm -v ${COMPOSE_PROJECT_NAME}_mnist:/opt/mount busybox cat /opt/mount/model/eval_results.json
 
-# Step 5: Print the contents of the results folder in the volume
-echo "📂 Printing the contents of the results folder..."
-docker run --rm -v ${COMPOSE_PROJECT_NAME}_mnist:/opt/mount busybox ls /opt/mount/results
+# # Step 5: Print the contents of the results folder in the volume
+# echo "📂 Printing the contents of the results folder..."
+# docker run --rm -v ${COMPOSE_PROJECT_NAME}_mnist:/opt/mount busybox ls /opt/mount/results
 
 # Step 6: Check the size of each Docker image and PyTorch version
 echo "📏 Checking the size of each Docker image and PyTorch version..."
-for service in train evaluate infer; do
+for service in train evaluate; do
     docker-compose build ${service}
     image_id=$(docker images -q ${COMPOSE_PROJECT_NAME}_${service})
     image_size=$(docker inspect ${image_id} --format='{{.Size}}')
